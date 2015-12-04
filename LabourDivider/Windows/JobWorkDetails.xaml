@@ -1,0 +1,71 @@
+﻿<Window x:Class="LabourDivider.Windows.JobWorkDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LabourDivider.Windows"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:winForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        mc:Ignorable="d"
+       Title="{Binding Titlee}" Height="350" Width="680">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7"/>
+        </Grid.RowDefinitions>
+        <wfi:WindowsFormsHost Grid.Row="0" Width="32" Height="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="9,0,0,0" >
+            <winForms:PictureBox x:Name="pictureBoxLoading" />
+        </wfi:WindowsFormsHost>
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" >
+            <Label x:Name="lblTitle" Content="{Binding CurrentJob}" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Od" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding FromDate}" Margin="2" />
+                <TextBlock Text="Do" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding ToDate}" Margin="2" />
+            </StackPanel>
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Works}" SelectedItem="{Binding WorkToDelete}" x:Name="CurrentJobWork" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="Moccasin" />
+                            <Setter Property="Foreground" Value="#000" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Deň" Binding="{Binding Path=From, StringFormat=\{0:dd.MM.yyyy dddd\}}" />
+                <DataGridTextColumn Header="Pracovník" Width="*" SortMemberPath="Employee.LastName">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat=" {0} {1}">
+                            <Binding Path="Employee.LastName"/>
+                            <Binding Path="Employee.FirstName"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Začiatok" Binding="{Binding Path=From, StringFormat=\{0:HH:mm\}}" Width="60" CanUserSort="False"/>
+                <DataGridTextColumn Header="Koniec" Binding="{Binding Path=To, StringFormat=\{0:HH:mm\}}" Width="60" CanUserSort="False"/>
+                <DataGridTextColumn Header="Trvanie" Binding="{Binding Path=Duration, StringFormat=hh\\:mm}" Width="60"/>
+                <DataGridTemplateColumn Header="Zmazať" CanUserSort="False" Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Zmaž" Click="Delete" Background="Pink"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Zmeň" CanUserSort="False" Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Zmeň" Click="Update"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <ProgressBar x:Name="progressBar1" Grid.Row="2" Maximum="100" />
+    </Grid>
+</Window>

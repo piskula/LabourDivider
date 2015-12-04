@@ -1,0 +1,24 @@
+﻿<Window x:Class="LabourDivider.Windows.ManageJobs"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LabourDivider.Windows"
+        mc:Ignorable="d"
+        Title="Správa Pozícií" Height="100" Width="400">
+    <Grid>
+        <StackPanel Margin="8,8,0,0">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton GroupName="Os" Content="Zmaž" Width="60" VerticalAlignment="Center"/>
+                <ComboBox Width="225" VerticalAlignment="Center" IsEnabled="{Binding IsDeletingChecked}"
+                          ItemsSource="{Binding Path=JobTypes}" SelectedValuePath="Id" SelectedValue="{Binding Path=JobId}"/>
+                <Button Content="Zmazať" Width="50" Margin="8,0,0,0" IsEnabled="{Binding IsDeletingChecked}" Click="DeleteJob" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
+                <RadioButton GroupName="Os" Content="Pridaj" Width="60" VerticalAlignment="Center" IsChecked="{Binding IsAddingChecked}" />
+                <TextBox Width="180" MaxLines="1" x:Name="NameTextBox" Text="{Binding JobName}" IsEnabled="{Binding IsAddingChecked}" />
+                <Button Content="Pridať" Click="AddJob" Width="50" Margin="53,0,0,0" IsEnabled="{Binding IsAddingChecked}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
